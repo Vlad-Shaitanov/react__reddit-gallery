@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Item from "../item/index.js";
 import './app.scss';
 
 export default class App extends Component {
@@ -7,13 +8,21 @@ export default class App extends Component {
 
 		this.state = {
 
-			items: [],
-			isLoading: false
+			items: [], //Посты
+			isLoading: false, //Состояние загрузки постов
+			enableAutoRefresh: false, //Включено ли автообновление постов
+			minComments: 0, //Минимальное кол-во комментариев
 		}
 	}
 	//https://www.reddit.com/r/reactjs.json?limit=100
 
+	//Запрос к серверу после рендеринга
 	componentDidMount() {
+		this.getItems();
+	}
+
+	//Получение постов с рервера
+	getItems = () => {
 		this.setState({
 			isLoading: true
 		});
@@ -31,29 +40,63 @@ export default class App extends Component {
 			});
 	}
 
+	updateMinComments = event => {
+		this.setState({
+			minComments: Number(event.target.value)
+		});
+	};
+
+	//Обновление постов
+	updateAutoRefresh = () => {
+		//При изменении состояния запускаем коллбэк
+		this.setState(state => ({
+			enableAutoRefresh: !state.enableAutoRefresh
+		}),
+			() => {
+				if (this.state.enableAutoRefresh) {
+					//По клику на кнопку запускаем обновление постов
+					this.autoRefresh = setInterval(this.getItems, 3000);
+				} else {
+					//При повторном клике на кнопку очищаем интервал
+					clearInterval(this.autoRefresh);
+				}
+			});
+	}
+
 	render() {
-		const { items, isLoading } = this.state;
+		const { items, isLoading, enableAutoRefresh, minComments } = this.state;
+
+		//Массив, отсортированный по комментариям
+		const itemsSortByComments = items
+			.sort((a, b) => b.data.num_comments - a.data.num_comments)
+			.filter(item => item.data.num_comments >= minComments);
+
 		return (
 			<div className="wrapper">
 				<div className="container">
 					<h1 className="main-title">Top commented</h1>
+
+					<div>
+						<p>Current filter: {minComments}</p>
+						<button type="button"
+							style={{ marginBottom: "15px" }}
+							onClick={this.updateAutoRefresh}
+						>{enableAutoRefresh ? "Stop" : "Start"} auto-refresh
+						</button>
+					</div>
+
+					<input type="range"
+						value={minComments}
+						onChange={this.updateMinComments}
+						min={0}
+						max={500}
+						style={{ width: "100%", display: "block", marginBottom: "15px" }} />
+
 					{isLoading ? (
 						<p>....Loading</p>
 					) : (
-						items.map(item => (
-							<div className="card" key={item.data.id} style={{
-								border: "1px solid #000",
-								margin: "0 auto 10px",
-								padding: "5px"
-							}}>
-								{item.data.thumbnail !== "self" && <img src={item.data.thumbnail} alt="" />}
-								<p>{item.data.title}</p>
-								<p>Number of comments: {item.data.num_comments}</p>
-								<a href={`https://www.reddit.com/${item.data.permalink}`}
-									target="_blank"
-									rel="noopener noreferrer"
-								>Link</a>
-							</div>
+						itemsSortByComments.map(item => (
+							<Item key={item.data.id} data={item.data} />
 						))
 					)}
 				</div>
