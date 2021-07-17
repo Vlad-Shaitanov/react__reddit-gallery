@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import Item from "../item/index.js";
+import React, { PureComponent } from "react";
+import { Item } from "../item/item.js";
 import './app.scss';
 
-export default class App extends Component {
+export default class App extends PureComponent {
 	constructor() {
 		super();
 
@@ -63,13 +63,19 @@ export default class App extends Component {
 			});
 	}
 
+	getItemsByComments = (items, minComments) => {
+		return (
+			items
+				.filter(item => item.data.num_comments >= minComments)
+				.sort((a, b) => b.data.num_comments - a.data.num_comments)
+		);
+	}
+
 	render() {
 		const { items, isLoading, enableAutoRefresh, minComments } = this.state;
 
 		//Массив, отсортированный по комментариям
-		const itemsSortByComments = items
-			.sort((a, b) => b.data.num_comments - a.data.num_comments)
-			.filter(item => item.data.num_comments >= minComments);
+		const itemsSortByComments = this.getItemsByComments(items, minComments);
 
 		return (
 			<div className="wrapper">
@@ -92,13 +98,17 @@ export default class App extends Component {
 						max={500}
 						style={{ width: "100%", display: "block", marginBottom: "15px" }} />
 
-					{isLoading ? (
-						<p>....Loading</p>
-					) : (
-						itemsSortByComments.map(item => (
-							<Item key={item.data.id} data={item.data} />
-						))
-					)}
+					<div className="cards-wrap">
+						{isLoading ? (
+							<p>....Loading</p>
+						) : itemsSortByComments.length > 0 ? (
+							itemsSortByComments.map(item => (
+								<Item key={item.data.id} data={item.data} />
+							))
+						) : (
+							<p>No results found matching your criteria</p>
+						)}
+					</div>
 				</div>
 			</div>
 		)

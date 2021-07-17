@@ -1,70 +1,34 @@
-# Getting Started with Create React App
+# Gallery of posts from Reddit
+***
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+#####Task #1
+Create a following gallery UI using ReactJS
 
-## Available Scripts
+Input data:
+1. Headline: “Top commented.”
+2. Gallery:
+   * Image: (key: “thumbnail”)
+   * Title: (key: “title”)
+   * Number of comments: (key: “num_comments”)
+   * Link: (key: “permalink”)
 
-In the project directory, you can run:
+#####Task #2
+Build an application using ReactJS. An application itself should be a custom image gallery. Images should be taken from Reddit: https://www.reddit.com/r/reactjs:
+1. All the data should be fetched using the following JSON: https://www.reddit.com/r/reactjs.json?limit=100
+2. Display “Loading...” status while data for the gallery is loading
+3. Display comments number inside each image as shown on the screenshot. Take it from data.num_comments.
+4. Add Reddit link next to comments counter. Take it from data.permalink.
+5. Sort all images by a number of comments per each image (as shown on a screenshot).
 
-### `npm start`
+#####Task #3
+Add auto-refresh feature:
+   1. When pressing “Start auto-refresh” button the application should update all image posts in a gallery every 3 seconds. The button changes to “Stop auto-refresh” when pressed.
+   2. When pressing “Stop auto-refresh” button the application should stop refreshing data every 3 seconds
+   3. Make sure sorting works with this feature
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+#####Task #4
+Add comments filter:
+   1. Add a range slider that filters all gallery image posts by comments number without passing any additional requests
+   2. Make sure that sorting works as expected when using the slider
+   3. Make sure auto-refresh feature works when using the slider
+   4. Display “No results found matching your criteria” message if no image posts found
